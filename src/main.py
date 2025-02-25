@@ -41,7 +41,6 @@ def prepare_static_map(map_array):
     map_prepared = np.transpose(map_prepared, (0, 1, 4, 2, 3))  # (1, 1, 1, H, W)
     return map_prepared
 
-
 def create_dummy_input(orientation_map, opsin_map, gcamp_map):
     """
     Create a dummy input tensor for the encoder.
@@ -177,13 +176,12 @@ def normalize_image(img):
         return np.zeros_like(img)
     return (img - img_min) / (img_max - img_min)
 
-
 def main():
     # Toggle to use flat maps for opsin and gcamp (True = flat, False = load from TIF)
-    use_flat_maps = True
+    use_flat_maps = False
 
     # Amplification factor for orientation map
-    amplification_factor = 20
+    amplification_factor = 5
 
     # Load static maps from TIF/MAT files
     orientation_map, opsin_map, gcamp_map = load_all_data()
@@ -318,8 +316,8 @@ def main():
     ground_truth_norm = normalize_image(ground_truth)
     predicted_filtered_norm = normalize_image(predicted_image_filtered)
     ground_truth_filtered_norm = normalize_image(ground_truth_filtered)
-    diff_norm = predicted_norm - ground_truth_norm
-    diff_filtered_norm = predicted_filtered_norm - ground_truth_filtered_norm
+    diff_norm = ground_truth_norm - predicted_norm
+    diff_filtered_norm = ground_truth_filtered_norm - predicted_filtered_norm
 
     fig, axs = plt.subplots(2, 3,figsize=(18, 12))
     im3 = axs[0, 0].imshow(ground_truth_norm, cmap='gray')
@@ -333,22 +331,22 @@ def main():
     plt.colorbar(im4, ax=axs[0, 1])
 
     im5 = axs[0, 2].imshow(diff_norm, cmap='seismic', vmin=-1, vmax=1)
-    axs[0, 2].set_title("Difference (Predicted - Ground Truth)")
+    axs[0, 2].set_title("Difference (Actual - Predicted)")
     axs[0, 2].axis("off")
     plt.colorbar(im5, ax=axs[0, 2])
 
-    im3 = axs[1, 0].imshow(ground_truth_filtered_norm, cmap='gray')
+    im3 = axs[1, 0].imshow(ground_truth_filtered_norm, cmap='gray', vmin=-1, vmax=1)
     axs[1, 0].set_title("Filtered Actual V1 Activity")
     axs[1, 0].axis("off")
     plt.colorbar(im3, ax=axs[1, 0])
 
-    im4 = axs[1, 1].imshow(predicted_filtered_norm, cmap='gray')
+    im4 = axs[1, 1].imshow(predicted_filtered_norm, cmap='gray', vmin=-1, vmax=1)
     axs[1, 1].set_title("Normalized Predicted V1 Activity")
     axs[1, 1].axis("off")
     plt.colorbar(im4, ax=axs[1, 1])
 
     im5 = axs[1, 2].imshow(diff_filtered_norm, cmap='seismic', vmin=-1, vmax=1)
-    axs[1, 2].set_title("Difference Filtered (Predicted - Ground Truth)")
+    axs[1, 2].set_title("Difference Filtered (Actual - Predicted)")
     axs[1, 2].axis("off")
     plt.colorbar(im5, ax=axs[1, 2])
     plt.tight_layout()

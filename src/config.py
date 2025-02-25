@@ -49,5 +49,5 @@ UP3_STRIDES = (2, 2)
 
 # Training parameters
 BATCH_SIZE = 1
-EPOCHS = 3
+EPOCHS = 10
 LEARNING_RATE = 1e-4

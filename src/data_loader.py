@@ -3,15 +3,37 @@ import cv2
 from config import ORIENTATION_MAP_FILE, OPSIN_TIF_FILE, GCAMP_TIF_FILE, INPUT_HEIGHT, INPUT_WIDTH
 from scipy.io import loadmat
 
+
+def rescale_array(arr, new_min, new_max):
+    old_min = np.min(arr)
+    old_max = np.max(arr)
+    if old_max - old_min == 0:
+        return np.full_like(arr, new_min)
+    return (arr - old_min) / (old_max - old_min) * (new_max - new_min) + new_min
+
+
 def load_orientation_map():
     data = loadmat(ORIENTATION_MAP_FILE)
-    if "MapOrt" not in data:
-        raise ValueError("The .mat file must contain the 'MapOrt' variable.")
-    # Orientation map shape should be (512, 512) or (512,512,1)
-    orientation_map = data["MapOrt"].astype(float)
-    if orientation_map.ndim == 2:
-        orientation_map = np.expand_dims(orientation_map, axis=-1)
-    return orientation_map
+    if "RespCondPCA" not in data:
+        raise ValueError("The .mat file must contain the 'RespCondPCA' variable.")
+    # Load RespCondPCA, which is expected to be 512x512x12
+    resp_pca = data["RespCondPCA"].astype(float)
+    if resp_pca.ndim != 3 or resp_pca.shape[2] < 7:
+        raise ValueError("RespCondPCA must have at least 7 slices (512x512x12 expected).")
+
+    # In MATLAB, indices are 1-based: slice 1 is for 0-tuned and slice 7 for 90-tuned.
+    # In Python, convert these to 0-based indices: 0 and 6.
+    ort0 = rescale_array(resp_pca[:, :, 0], 0, 1)
+    ort90 = rescale_array(resp_pca[:, :, 6], 0, 1)
+
+    # Compute the difference: 90-tuned minus 0-tuned, and rescale to [-1, 1].
+    diff_map = ort90 - ort0
+    ort90_0 = rescale_array(diff_map, -1, 1)
+
+    # Expand dims to ensure shape (512, 512, 1)
+    if ort90_0.ndim == 2:
+        ort90_0 = np.expand_dims(ort90_0, axis=-1)
+    return ort90_0
 
 def load_tif_map(filepath):
     # Read image in grayscale mode (shape: H x W)
