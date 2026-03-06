@@ -7,7 +7,27 @@ This project implements an encoder model for predicting V1 activity from visual 
 For a test run, the network simulates predicted activity for a condition (max V-contrast with V-opto stimulation) using static maps (orientation, opsin, GCaMP) and dummy raw data. The predicted output and the static maps are then plotted for visual inspection.
 
 ## Folder Structure
-Project_Root/ ├── data/ │ └── Chip20240118/ │ ├── run2/ │ │ ├── M28D20240118R2StabIntgS004E010.mat │ │ └── M28D20240118R2TS.mat │ └── run3/ │ ├── M28D20240118R3StabIntgS004E010.mat │ └── M28D20240118R3TS.mat │ ├── M28D20240118R0OrientationP2.tif │ ├── SL1EX570DM600EM632L13OD0_binned.tif │ └── SL1EX480DM505EM520L100OD16_binned.tif ├── src/ │ ├── init.py │ ├── config.py │ ├── data_loader.py │ ├── data_preprocessing.py │ ├── model_encoder.py │ └── main.py ├── requirements.txt └── README.md
+Project_Root/
+├── data/
+│   └── Chip20240118/
+│       ├── run2/
+│       │   ├── M28D20240118R2StabIntgS004E010.mat
+│       │   └── M28D20240118R2TS.mat
+│       └── run3/
+│           ├── M28D20240118R3StabIntgS004E010.mat
+│           └── M28D20240118R3TS.mat
+│       ├── M28D20240118R0OrientationP2.tif
+│       ├── SL1EX570DM600EM632L13OD0_binned.tif
+│       └── SL1EX480DM505EM520L100OD16_binned.tif
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── data_loader.py
+│   ├── data_preprocessing.py
+│   ├── model_encoder.py
+│   └── main.py
+├── requirements.txt
+└── README.md
 
 ## Setup and Usage
 
