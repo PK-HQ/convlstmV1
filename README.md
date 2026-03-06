@@ -14,16 +14,13 @@ Two datasets are processed:
 ```
 Project_Root/
 ├── data/
-│   └── Chip20240118/
-│       ├── run2/
-│       │   ├── M28D20240118R2StabIntgS004E010.mat
-│       │   └── M28D20240118R2TS.mat
-│       └── run3/
-│           ├── M28D20240118R3StabIntgS004E010.mat
-│           └── M28D20240118R3TS.mat
-│       ├── M28D20240118R0OrientationP2.tif
-│       ├── SL1EX570DM600EM632L13OD0_binned.tif
-│       └── SL1EX480DM505EM520L100OD16_binned.tif
+│   └── Session_folder/
+│       ├── Run_folder/
+│       │   ├── Integrated_response.mat
+│       │   └── Run_metadata.mat
+│       ├── Orientation_column_map.tif
+│       ├── Reporter_expression_map.tif (GCaMP/Read)
+│       └── Actuator_expression_map.tif (Opsin/Write)
 ├── src/
 │   ├── __init__.py
 │   ├── config.py
