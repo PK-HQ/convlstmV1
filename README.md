@@ -27,4 +27,4 @@ The script will load the condition-averaged optostim data, select a sample with 
 - Opsin map, GCaMP map, Orientation map, and Predicted V1 activity in a 2x2 subplot.
 - The ground truth condition-averaged image for comparison.
 
-Future work includes integrating the training routine with real imaging data.
+*Status: research prototype — training integration in progress.*
